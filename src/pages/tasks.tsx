@@ -9,7 +9,7 @@ interface Task {
 }
 
 const TaskManager = () => {
-  const { getJSONItem, addJSONItem } = useLocalStorage()
+  const { getJSONItem, addJSONItem } = useLocalStorage("taskList")
   const createTaskRef = useRef<HTMLInputElement>(null)
   const {
     tasks,
@@ -49,12 +49,12 @@ const TaskManager = () => {
 
   useEffect(()=>{
     if(tasks.length <= 0) {
-      updateList(getJSONItem("taskList"))
+      updateList(getJSONItem())
     }
   },[])
 
   const cacheData = () => {
-    addJSONItem("taskList", tasks)
+    addJSONItem(tasks)
   }
 
   return (
