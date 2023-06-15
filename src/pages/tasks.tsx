@@ -1,5 +1,6 @@
+import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useTaskManager } from '@/store/useTaskManager';
-import React, { ChangeEvent, useRef, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 interface Task {
   id: number,
@@ -8,15 +9,17 @@ interface Task {
 }
 
 const TaskManager = () => {
+  const { getJSONItem, addJSONItem } = useLocalStorage()
   const [searchTask,setSearchTask] = useState("")
   const createTaskRef = useRef<HTMLInputElement>(null)
-   const {
-     tasks,
-     addTask,
-     updateTask,
-     deleteTask,
-   } = useTaskManager();
-
+  const {
+    tasks,
+    addTask,
+    updateTask,
+    deleteTask,
+    updateList
+  } = useTaskManager();
+  
   const handleAddTask = () => {
     const title = createTaskRef.current?.value as string
     const newTask = {
@@ -42,6 +45,16 @@ const TaskManager = () => {
   const filteredTasks = tasks.filter((task) =>
     task.title.toLowerCase().includes(searchTask.toLowerCase())
   );
+
+  useEffect(()=>{
+    if(tasks.length <= 0) {
+      updateList(getJSONItem("taskList"))
+    }
+  },[])
+
+  const cacheData = () => {
+    addJSONItem("taskList", tasks)
+  }
 
   return (
     <div>
@@ -71,6 +84,7 @@ const TaskManager = () => {
           </li>
         ))}
       </ul>
+      <button onClick={()=>cacheData()}>Cache tasks</button>
     </div>
   );
 };

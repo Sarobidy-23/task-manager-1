@@ -9,7 +9,8 @@ type Task = {
 type TaskAction = {
   addTask: (newTask: Task)=>void,
   updateTask: (taskId: number, updatedTask: Task)=>void,
-  deleteTask: (taskId: number) => void
+  deleteTask: (taskId: number) => void,
+  updateList: (taskList: Task[]) => void
 }
 const useTaskManager = create<{tasks:Task[]} & TaskAction>((set) => ({
   tasks:[],
@@ -21,6 +22,9 @@ const useTaskManager = create<{tasks:Task[]} & TaskAction>((set) => ({
   },
   deleteTask: (taskId) => {
     set((state) => ({tasks: state.tasks.filter((task)=>task.id != taskId)}))
+  },
+  updateList: (taskList) => {
+    set(() => ({tasks: taskList}))
   }
 }))
 
