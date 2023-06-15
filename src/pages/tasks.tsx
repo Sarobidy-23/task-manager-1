@@ -10,14 +10,15 @@ interface Task {
 
 const TaskManager = () => {
   const { getJSONItem, addJSONItem } = useLocalStorage()
-  const [searchTask,setSearchTask] = useState("")
   const createTaskRef = useRef<HTMLInputElement>(null)
   const {
     tasks,
+    searchTask,
     addTask,
     updateTask,
     deleteTask,
-    updateList
+    updateList,
+    setSearchTask
   } = useTaskManager();
   
   const handleAddTask = () => {

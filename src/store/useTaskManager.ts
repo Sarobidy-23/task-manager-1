@@ -10,10 +10,12 @@ type TaskAction = {
   addTask: (newTask: Task)=>void,
   updateTask: (taskId: number, updatedTask: Task)=>void,
   deleteTask: (taskId: number) => void,
-  updateList: (taskList: Task[]) => void
+  updateList: (taskList: Task[]) => void,
+  setSearchTask: (title: string) => void
 }
-const useTaskManager = create<{tasks:Task[]} & TaskAction>((set) => ({
+const useTaskManager = create<{tasks:Task[]} & {searchTask: string} & TaskAction>((set) => ({
   tasks:[],
+  searchTask: "",
   addTask: (newTask) => {
     set((state) => ({tasks: [...state.tasks, newTask]}))
   },
@@ -25,7 +27,10 @@ const useTaskManager = create<{tasks:Task[]} & TaskAction>((set) => ({
   },
   updateList: (taskList) => {
     set(() => ({tasks: taskList}))
-  }
+  },
+  setSearchTask(title) {
+    set(()=>({searchTask: title}))
+  },
 }))
 
 
